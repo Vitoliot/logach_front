@@ -16,6 +16,15 @@
                 <v-card-text>
                   {{task.name}}
                   {{task.description}}
+                    <p 
+                    v-for="ans in user_answers"
+                      :key = ans.id>
+                  <strong v-show="ans.task==task.id&&ans.solved==1"
+                    v-for="(value, key) in ans.answer"
+                    :key="key"> 
+                      {{key}}) {{value}};
+                    </strong>
+                  </p>
                 </v-card-text>
               </v-col>
               <v-col cols="4" rows="5">
@@ -36,7 +45,7 @@
               <v-col>
                 <v-card-text v-for="ans in user_answers"
                 :key='ans.task'>
-                  <v-btn v-show="ans.task==task.id&&ans.solved==1" color = "blue">Решено</v-btn>
+                  <v-btn v-show="ans.task==task.id&&ans.solved==1" color = "blue" >Решено</v-btn>
                 </v-card-text>
               </v-col>
           </v-card>
@@ -135,7 +144,6 @@ export default {
     },
     async addUserAnswers(i){
       try{
-        // console.log([this.form_answers[this.tasks[i].number], Date.now, this.u_id, this.tasks[i].id])
         await this.axios.post('http://127.0.0.1:8000/api/usertask/new', 
         {
         "answer": this.form_answers[this.tasks[i].number],
